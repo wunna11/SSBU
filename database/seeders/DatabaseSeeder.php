@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Course;
+use App\Models\Exercise;
+use App\Models\Quiz;
 use App\Models\Teacher;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,9 +24,11 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        User::factory()->count(10)->create();
-        Admin::factory()->count(1)->create();
-        Teacher::factory()->count(10)->create();
-        Course::factory()->count(10)->create();
+        // User::factory()->count(10)->create();
+        // Admin::factory()->count(1)->create();
+        // Teacher::factory()->count(10)->create();
+        // Course::factory()->count(10)->create();
+        // Exercise::factory()->count(10)->create();
+        Quiz::factory()->count(20)->create();
     }
 }

@@ -30,19 +30,22 @@ class AdminResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('role_id')
-                    ->relationship(name: 'role', titleAttribute: 'name'),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Section::make()
+                ->schema([
+                    Forms\Components\Select::make('role_id')
+                        ->relationship(name: 'role', titleAttribute: 'name'),
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('password')
+                        ->password()
+                        ->required()
+                        ->maxLength(255),
+                ])
             ]);
     }
 

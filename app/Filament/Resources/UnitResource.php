@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UnitResource\Pages;
 use App\Filament\Resources\UnitResource\RelationManagers;
+use App\Filament\Resources\UnitResource\RelationManagers\ExercisesRelationManager;
 use App\Models\Unit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +21,8 @@ class UnitResource extends Resource
     protected static ?string $model = Unit::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Data';
 
     public static function getNavigationBadge(): ?string
     {
@@ -75,9 +79,18 @@ class UnitResource extends Resource
                             ->required()
                             ->hidden(fn ($livewire) => $livewire->tableFilters['course_id'] !== null),
                     ]),
+                SelectFilter::make('course')
+                    ->relationship('course', 'title')
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('details')
+                    ->label('Details')
+                    ->url(fn (Unit $record): string => ExerciseResource::getUrl('index', ['tableFilters[unit_id][value]' => $record->id]))
+                    ->color('info')
+                    ->icon('heroicon-o-clipboard-document')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -89,7 +102,7 @@ class UnitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ExercisesRelationManager::class
         ];
     }
 

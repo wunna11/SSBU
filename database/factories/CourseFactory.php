@@ -18,7 +18,7 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->name(),
+            'title' => fake()->title(),
             'outline' => fake()->realText($maxNbChars = 200, $indexSize = 2),
             'image' => fake()->imageUrl($width = 640, $height = 480),
             'teacher_id' => Teacher::inRandomOrder()->first()->id ?? Teacher::factory(),

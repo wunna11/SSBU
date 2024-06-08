@@ -7,24 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Unit extends Model
+class Exercise extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    public $fillable = [
         'id',
         'title',
-        'course_id',
-        'rank'
+        'time',
+        'rank',
+        'pass_percentage',
+        'unit_id',
+        'quantity',
     ];
 
-    public function course(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Unit::class);
     }
 
-    public function exercises(): HasMany
+    public function quizzes(): HasMany
     {
-        return $this->hasMany(Exercise::class);
+        return $this->hasMany(Quiz::class);
     }
 }

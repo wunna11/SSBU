@@ -4,10 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Filament\Resources\CourseResource\RelationManagers\QuizzesRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\UnitsRelationManager;
 use App\Models\Course;
 use Filament\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,6 +29,8 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Data';
+
     public static function getNavigationBadge(): ?string
     {
         return number_format(static::getModel()::count());
@@ -34,23 +40,32 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->maxLength(255),
-                Forms\Components\RichEditor::make('outline')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('images/courses'),
-                Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'name'),
-                Forms\Components\TextInput::make('rank')
-                    ->numeric(),
-                Forms\Components\Toggle::make('public')
-                    ->required(),
-                Forms\Components\TextInput::make('endtest_status')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Section::make()
+                    ->schema([
+                        Split::make([
+                            Section::make([
+                                Forms\Components\TextInput::make('title')
+                                    ->maxLength(255),
+                                Forms\Components\RichEditor::make('outline')
+                                    ->columnSpanFull(),
+                                Forms\Components\FileUpload::make('image')
+                                    ->image()
+                                    ->directory('images/courses'),
+                            ]),
+                            Section::make([
+                                Forms\Components\Select::make('teacher_id')
+                                    ->relationship(name: 'teacher', titleAttribute: 'name'),
+                                Forms\Components\TextInput::make('rank')
+                                    ->numeric(),
+                                    Forms\Components\TextInput::make('endtest_status')
+                                    ->required()
+                                    ->numeric()
+                                    ->default(0),
+                                Forms\Components\Toggle::make('public')
+                                        ->required(),
+                            ])
+                        ]),
+                    ])
             ]);
     }
 
@@ -89,11 +104,11 @@ class CourseResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\Action::make('details')
-                        ->label('Details')
-                        ->url(fn (Course $record): string => UnitResource::getUrl('index', ['tableFilters[course_id][value]' => $record->id]))
-                        ->color('info')
-                        ->icon('heroicon-o-clipboard-document')
+                    // Tables\Actions\Action::make('details')
+                    //     ->label('Details')
+                    //     ->url(fn (Course $record): string => UnitResource::getUrl('index', ['tableFilters[course_id][value]' => $record->id]))
+                    //     ->color('info')
+                    //     ->icon('heroicon-o-clipboard-document')
                 ])
             ])
             ->bulkActions([
@@ -114,7 +129,8 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            UnitsRelationManager::class,
+            QuizzesRelationManager::class
         ];
     }
 

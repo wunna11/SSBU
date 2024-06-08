@@ -8,6 +8,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -15,6 +16,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Split;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -38,37 +40,47 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('user_name')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->revealable()
-                    ->required(fn ($livewire): bool => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
-                    ->maxLength(255)
-                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                    ->dehydrated(fn (?string $state): bool => filled($state)),
-                Select::make('gender')
-                    ->options([
-                        Gender::Male => 'Male',
-                        Gender::Female => 'Female',
-                    ]),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('dob'),
-                Forms\Components\TextInput::make('division')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('user_status')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Section::make()
+                ->schema([
+                    Split::make([
+                        Section::make([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('email')
+                                ->email()
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('user_name')
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('password')
+                                ->password()
+                                ->revealable()
+                                ->required(fn ($livewire): bool => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                                ->maxLength(255)
+                                ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                                ->dehydrated(fn (?string $state): bool => filled($state)),
+                            Select::make('gender')
+                                ->options([
+                                    Gender::Male => 'Male',
+                                    Gender::Female => 'Female',
+                                ]),
+                        ]),
+                        Section::make([
+                            Forms\Components\TextInput::make('phone')
+                                ->tel()
+                                ->maxLength(255),
+                            Forms\Components\DatePicker::make('dob'),
+                            Forms\Components\TextInput::make('division')
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('user_status')
+                                ->required()
+                                ->numeric()
+                                ->default(0),
+                        ])
+                        
+                    ])
+                ])
             ]);
     }
 
