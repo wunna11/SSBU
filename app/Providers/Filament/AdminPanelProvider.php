@@ -17,6 +17,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Awcodes\Curator\CuratorPlugin;
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -63,6 +65,18 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarCollapsibleOnDesktop()
             ->sidebarFullyCollapsibleOnDesktop()
-            ->authGuard('admin');
+            ->authGuard('admin')
+            ->plugins(
+                [
+                    CuratorPlugin::make()
+                        ->label('Media')
+                        ->pluralLabel('Media Library')
+                        ->navigationIcon('heroicon-o-photo')
+                        ->navigationGroup('Media')
+                        ->navigationCountBadge()
+                        ->defaultListView('grid' || 'list'),
+                    FilamentSpatieRolesPermissionsPlugin::make()    
+                ],
+            );
     }
 }

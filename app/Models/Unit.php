@@ -27,4 +27,9 @@ class Unit extends Model
     {
         return $this->hasMany(Exercise::class);
     }
+
+    public function videos(): HasMany
+    {
+        return $this->hasMany(Video::class);
+    }
 }

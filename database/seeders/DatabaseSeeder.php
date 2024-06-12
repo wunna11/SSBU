@@ -3,11 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Audio;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\Exercise;
 use App\Models\Quiz;
+use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Video;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +33,13 @@ class DatabaseSeeder extends Seeder
         // Teacher::factory()->count(10)->create();
         // Course::factory()->count(10)->create();
         // Exercise::factory()->count(10)->create();
-        Quiz::factory()->count(20)->create();
+        // Quiz::factory()->count(20)->create();
+        // Video::factory()->count(20)->create();
+
+        // Category::factory()->count(10)->create();
+        // Audio::factory()->count(20)->create();
+        // Role::factory()->root()->create();
+        // Role::factory()->rootAdmin()->create();
+        // Role::factory()->manager()->create();
     }
 }

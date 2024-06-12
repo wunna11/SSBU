@@ -27,6 +27,8 @@ class ExerciseResource extends Resource
 
     protected static ?string $navigationGroup = 'Data';
 
+    protected static ?int $navigationSort = 3;
+
     public static function getNavigationBadge(): ?string
     {
         return number_format(static::getModel()::count());

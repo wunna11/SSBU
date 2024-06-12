@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UnitResource\Pages;
 use App\Filament\Resources\UnitResource\RelationManagers;
 use App\Filament\Resources\UnitResource\RelationManagers\ExercisesRelationManager;
+use App\Filament\Resources\UnitResource\RelationManagers\VideosRelationManager;
 use App\Models\Unit;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,9 +21,11 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
     protected static ?string $navigationGroup = 'Data';
+
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string
     {
@@ -102,7 +105,8 @@ class UnitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ExercisesRelationManager::class
+            ExercisesRelationManager::class,
+            VideosRelationManager::class,
         ];
     }
 

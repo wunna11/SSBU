@@ -17,9 +17,11 @@ class QuizResource extends Resource
 {
     protected static ?string $model = Quiz::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
 
     protected static ?string $navigationGroup = 'Data';
+
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

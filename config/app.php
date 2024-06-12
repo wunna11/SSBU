@@ -137,6 +137,9 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
     'aliases' => Facade::defaultAliases()->merge([

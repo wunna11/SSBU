@@ -22,14 +22,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Filament\Support\Enums\FontWeight;
+use Filament\Notifications\Notification;
 
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Data';
+
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationBadge(): ?string
     {
@@ -57,71 +61,145 @@ class CourseResource extends Resource
                                     ->relationship(name: 'teacher', titleAttribute: 'name'),
                                 Forms\Components\TextInput::make('rank')
                                     ->numeric(),
-                                    Forms\Components\TextInput::make('endtest_status')
+                                Forms\Components\TextInput::make('endtest_status')
                                     ->required()
                                     ->numeric()
                                     ->default(0),
                                 Forms\Components\Toggle::make('public')
-                                        ->required(),
+                                    ->required(),
                             ])
                         ]),
                     ])
             ]);
     }
 
+    // public static function table(Table $table): Table
+    // {
+    //     return $table
+    //         ->columns([
+    //             Tables\Columns\TextColumn::make('title')
+    //                 ->searchable(),
+    //             Tables\Columns\ImageColumn::make('image')
+    //                 ->circular(),
+    //             Tables\Columns\TextColumn::make('teacher.name')
+    //                 ->numeric()
+    //                 ->sortable(),
+    //             Tables\Columns\TextColumn::make('rank')
+    //                 ->numeric()
+    //                 ->sortable(),
+    //             Tables\Columns\IconColumn::make('public')
+    //                 ->boolean(),
+    //             Tables\Columns\TextColumn::make('endtest_status')
+    //                 ->numeric()
+    //                 ->sortable(),
+    //             Tables\Columns\TextColumn::make('created_at')
+    //                 ->dateTime()
+    //                 ->sortable()
+    //                 ->toggleable(isToggledHiddenByDefault: true),
+    //             Tables\Columns\TextColumn::make('updated_at')
+    //                 ->dateTime()
+    //                 ->sortable()
+    //                 ->toggleable(isToggledHiddenByDefault: true),
+    //         ])
+    //         ->filters([
+    //             //
+    //         ])
+    //         ->actions([
+    //             ActionGroup::make([
+    //                 Tables\Actions\EditAction::make(),
+    //                 Tables\Actions\DeleteAction::make(),
+    //                 // Tables\Actions\Action::make('details')
+    //                 //     ->label('Details')
+    //                 //     ->url(fn (Course $record): string => UnitResource::getUrl('index', ['tableFilters[course_id][value]' => $record->id]))
+    //                 //     ->color('info')
+    //                 //     ->icon('heroicon-o-clipboard-document')
+    //             ])
+    //         ])
+    //         ->bulkActions([
+    //             Tables\Actions\BulkActionGroup::make([
+    //                 Tables\Actions\DeleteBulkAction::make()
+    //                     ->action(function (Collection $record) {
+    //                         dd('hello', $record[0]->image, Storage::exists('/public/courses/01HZKSATHJ8QCB8TVJ1HBBVB85.png'));
+    //                         if (Storage::exists('/public/courses/' . $record)) {
+    //                             dd(true);
+    //                             Storage::delete('/public/courses/' . $record);
+    //                         }
+    //                         return;
+    //                     })
+    //             ]),
+    //         ]);
+    // }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image')
-                    ->circular(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rank')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('public')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('endtest_status')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\ImageColumn::make('image')
+                        ->height('100%')
+                        ->width('100%'),
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('title')
+                            ->weight(FontWeight::Bold)
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('teacher.name')
+                            ->sortable(),
+                    ]),
+                ])->space(3),
+                Tables\Columns\Layout\Panel::make([
+                    Tables\Columns\Layout\Split::make(
+                        [
+                            Tables\Columns\TextColumn::make('rank')
+                                ->icon('heroicon-o-star')
+                                ->numeric()
+                                ->sortable(),
+                            Tables\Columns\IconColumn::make('public')
+                                ->boolean(),
+                            Tables\Columns\TextColumn::make('endtest_status')
+                                ->numeric()
+                                ->sortable(),
+                        ]
+                    ),
+                    Tables\Columns\Layout\Stack::make(
+                        [
+                            Tables\Columns\TextColumn::make('created_at')
+                                ->dateTime()
+                                ->sortable()
+                                ->toggleable(isToggledHiddenByDefault: true),
+                            Tables\Columns\TextColumn::make('updated_at')
+                                ->dateTime()
+                                ->sortable()
+                                ->toggleable(isToggledHiddenByDefault: true),
+                        ]
+                    )
+                ])->collapsible(),
             ])
             ->filters([
                 //
             ])
+            ->contentGrid([
+                'md' => 2,
+                'xl' => 3,
+            ])
+            ->paginated([
+                18,
+                36,
+                72,
+                'all',
+            ])
             ->actions([
-                ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    // Tables\Actions\Action::make('details')
-                    //     ->label('Details')
-                    //     ->url(fn (Course $record): string => UnitResource::getUrl('index', ['tableFilters[course_id][value]' => $record->id]))
-                    //     ->color('info')
-                    //     ->icon('heroicon-o-clipboard-document')
-                ])
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->action(function (Collection $record) {
-                            dd('hello', $record[0]->image, Storage::exists('/public/courses/01HZKSATHJ8QCB8TVJ1HBBVB85.png'));
-                            if (Storage::exists('/public/courses/' . $record)) {
-                                dd(true);
-                                Storage::delete('/public/courses/' . $record);
-                            }
-                            return;
-                        })
+                        ->action(function () {
+                            Notification::make()
+                                ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                                ->warning()
+                                ->send();
+                        }),
                 ]),
             ]);
     }
