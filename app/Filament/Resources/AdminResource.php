@@ -33,8 +33,8 @@ class AdminResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\Select::make('role_id')
-                            ->relationship(name: 'role', titleAttribute: 'name'),
+                        // Forms\Components\Select::make('role_id')
+                        //     ->relationship(name: 'role', titleAttribute: 'name'),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
@@ -58,9 +58,9 @@ class AdminResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role.name')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('role.name')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Awcodes\Curator\CuratorPlugin;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -74,9 +75,9 @@ class AdminPanelProvider extends PanelProvider
                         ->navigationIcon('heroicon-o-photo')
                         ->navigationGroup('Media')
                         ->navigationCountBadge()
-                        ->defaultListView('grid' || 'list'),
-                    FilamentSpatieRolesPermissionsPlugin::make()    
+                        ->defaultListView('grid' || 'list'),  
                 ],
-            );
+            )
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make());
     }
 }

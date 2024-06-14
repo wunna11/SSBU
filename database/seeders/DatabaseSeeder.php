@@ -22,24 +22,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // User::factory()->count(10)->create();
-        // Admin::factory()->count(1)->create();
-        // Teacher::factory()->count(10)->create();
-        // Course::factory()->count(10)->create();
-        // Exercise::factory()->count(10)->create();
-        // Quiz::factory()->count(20)->create();
-        // Video::factory()->count(20)->create();
+        User::factory()->count(10)->create();
+        Teacher::factory()->count(10)->create();
+        Course::factory()->count(10)->create();
+        Exercise::factory()->count(10)->create();
+        Quiz::factory()->count(20)->create();
+        Video::factory()->count(20)->create();
 
-        // Category::factory()->count(10)->create();
-        // Audio::factory()->count(20)->create();
-        // Role::factory()->root()->create();
-        // Role::factory()->rootAdmin()->create();
-        // Role::factory()->manager()->create();
+        Category::factory()->count(10)->create();
+        Audio::factory()->count(20)->create();
+
+        $this->call(RoleSeeder::class);
     }
 }
