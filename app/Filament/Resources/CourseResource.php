@@ -60,6 +60,8 @@ class CourseResource extends Resource
                             Section::make([
                                 Forms\Components\Select::make('teacher_id')
                                     ->relationship(name: 'teacher', titleAttribute: 'name'),
+                                Forms\Components\Select::make('batch_id')
+                                    ->relationship(name: 'batch', titleAttribute: 'name'),
                                 Forms\Components\TextInput::make('rank')
                                     ->numeric(),
                                 Forms\Components\TextInput::make('endtest_status')
@@ -87,6 +89,8 @@ class CourseResource extends Resource
                             ->weight(FontWeight::Bold)
                             ->sortable(),
                         Tables\Columns\TextColumn::make('teacher.name')
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('batch.name')
                             ->sortable(),
                     ]),
                 ])->space(3),

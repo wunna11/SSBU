@@ -41,46 +41,46 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()
-                ->schema([
-                    Split::make([
-                        Section::make([
-                            Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('email')
-                                ->email()
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('user_name')
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('password')
-                                ->password()
-                                ->revealable()
-                                ->required(fn ($livewire): bool => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
-                                ->maxLength(255)
-                                ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                                ->dehydrated(fn (?string $state): bool => filled($state)),
-                            Select::make('gender')
-                                ->options([
-                                    Gender::Male => 'Male',
-                                    Gender::Female => 'Female',
-                                ]),
-                        ]),
-                        Section::make([
-                            Forms\Components\TextInput::make('phone')
-                                ->tel()
-                                ->maxLength(255),
-                            Forms\Components\DatePicker::make('dob'),
-                            Forms\Components\TextInput::make('division')
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('user_status')
-                                ->required()
-                                ->numeric()
-                                ->default(0),
+                    ->schema([
+                        Split::make([
+                            Section::make([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('user_name')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('password')
+                                    ->password()
+                                    ->revealable()
+                                    ->required(fn ($livewire): bool => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                                    ->maxLength(255)
+                                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                                    ->dehydrated(fn (?string $state): bool => filled($state)),
+                                Select::make('gender')
+                                    ->options([
+                                        Gender::Male => 'Male',
+                                        Gender::Female => 'Female',
+                                    ]),
+                            ]),
+                            Section::make([
+                                Forms\Components\TextInput::make('phone')
+                                    ->tel()
+                                    ->maxLength(255),
+                                Forms\Components\DatePicker::make('dob'),
+                                Forms\Components\TextInput::make('division')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('user_status')
+                                    ->required()
+                                    ->numeric()
+                                    ->default(0),
+                            ])
+
                         ])
-                        
                     ])
-                ])
             ]);
     }
 
@@ -133,11 +133,11 @@ class UserResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     BulkAction::make('export')
-                    ->label('Export to excel')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->action(function(Collection $records) {
-                        return Excel::download(new UsersExport($records), 'users.xlsx');
-                    })
+                        ->label('Export to excel')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            return Excel::download(new UsersExport($records), 'users.xlsx');
+                        })
                 ]),
             ]);
     }

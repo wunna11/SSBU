@@ -11,7 +11,7 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $fillable= [
+    protected $fillable = [
         'title',
         'outlie',
         'image',
@@ -33,7 +33,17 @@ class Course extends Model
 
     public function quizzes(): HasMany
     {
-        return $this->hasMany(Quiz:: class);
+        return $this->hasMany(Quiz::class);
+    }
+
+    // public function batches(): HasMany
+    // {
+    //     return $this->hasMany(Batch::class);
+    // }
+
+    public function batch(): BelongsTo
+    {
+        return $this->belongsTo(Batch::class);
     }
 
 }
